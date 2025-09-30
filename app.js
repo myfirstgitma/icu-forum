@@ -7,8 +7,11 @@ require("dotenv").config(); // load env variables
 app.get("/", (req, res) => {
   res.send(`<h1>Response is sent successfully</h1>`);
 });
+app.get("/user/api/login", (req, res) => {
+  res.send("successful")
+})
 
-// Listen on port
+//Listen on port
 // app.listen(port, () => {
 //   console.log(`Server running on port ${port},http://localhost:5000`);
 // });

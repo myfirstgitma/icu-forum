@@ -1,15 +1,16 @@
-
+const { request } = require("express");
 const mysql2 = require("mysql2");
+r;
 
-const dbConnection = mysql2.createPool({
-  user: "evangadi-fourm",
-  database: "evangadi_db",
-  host: "localhost",
-  password: "water12345",
-  connectionLimit: 10,
+const mysqlconnection = mysql2.createPool({
+  user: process.env.DB_USER,
+  database: DB_DATABASE,
+  host: DB_HOST,
+  password: DB_PASSWORD,
+  connectionLimit: DB_CONNECTION_LIMIT,
 });
 
-dbConnection.execute("SELECT 1", (err, result) => {
+mysqlconnection.getConnection("SELECT 1", (err, result) => {
   if (err) {
     console.log("Connection error:", err.message);
   } else {

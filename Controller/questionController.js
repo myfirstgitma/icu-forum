@@ -9,7 +9,7 @@ const getAllQuestions = async (req, res) => {
             q.description, 
             q.tag,
             q.created_at,               
-            u.username AS asked_by
+            u.username 
         FROM 
             questions q
         JOIN 
@@ -19,7 +19,7 @@ const getAllQuestions = async (req, res) => {
     
   `;
   try {
-    const [questions] = await db.query(sqlQuery);
+    const [questions] = await db.execute(sqlQuery);
     res.status(200).json({
       status: "succesfull",
       count: questions.length,
@@ -37,4 +37,4 @@ const getAllQuestions = async (req, res) => {
   }
 };
 
-module.exports = { getAllQuestions, askquestion, singlequestion };
+module.exports = { getAllQuestions};

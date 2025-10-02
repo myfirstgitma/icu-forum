@@ -3,11 +3,7 @@ const db = require("../db/dbconfig");
 const getAllQuestions = async (req, res) => {
   const sqlQuery = `
    
-      SELECT *       
-        FROM 
-            questions q
-        JOIN 
-            users u ON q.userid = u.userid
+      SELECT questions.title,questions.questionid,Users.username FROM questions LEFT JOIN Users ON questions.userid = Users.userid order by id desc
   `;
   try {
     const [questions] = await db.execute(sqlQuery);

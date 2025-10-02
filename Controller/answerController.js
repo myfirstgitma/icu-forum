@@ -1,12 +1,13 @@
 const mysqlconnection = require("../db/dbconfig"); 
 const asyncHandler = require("express-async-handler"); 
+const {StatusCodes}=require("http-status-codes");
 
 const postAnswer = asyncHandler(async (req, res) => {
   const { userid ,questionid, answer } = req.body;
 
   // Error Handling for missing answers ---
   if (!answer || !questionid) {
-    res.status(400);
+    res.status(StatusCodes.BAD_REQUIST);
     throw new Error('Question ID and answer text are required.');
   }
 
@@ -16,7 +17,7 @@ const postAnswer = asyncHandler(async (req, res) => {
   );
   
   if (questionRows.length === 0) {
-    res.status(404);
+    res.status(StatusCodes.NOT_FOUND);
     throw new Error('Question not found with the provided ID.');
   }
 
@@ -28,7 +29,7 @@ const postAnswer = asyncHandler(async (req, res) => {
 
     //  Response Handling (201 Created) ---
     if (result.affectedRows === 1) {
-      res.status(201).json({
+      res.status(StatusCodes.CREATED).json({
         message: 'Answer submitted successfully',
         answer: {
           answerid: result.insertId,
@@ -38,15 +39,45 @@ const postAnswer = asyncHandler(async (req, res) => {
         },
       });
     } else {
-      res.status(500);
+      res.status(StatusCodes.INTERNAL_SERVER_ERROR);
       throw new Error('Failed to save the answer in the database.');
     }
   } catch (error) {
     // If a foreign key constraint fails (though covered by the check above)  or another DB error occurs.
     console.error("Database error while posting answer:", error);
-    res.status(500);
+    res.status(StatusCodes.INTERNAL_SERVER_ERROR);
     throw new Error('Server error while saving answer.');
   }
 });
 
-module.exports = {postAnswer,};
+
+
+// Get Answer 
+
+async function getanswer(req, res) {
+  const questionid = req.query.questionid || 'default_value'; 
+//   console.log(req.query)
+
+  try {
+    const readAnswers= `SELECT answers.*,Users.username FROM answers LEFT JOIN Users ON answers.userid = Users.userid where answers.questionid=?`
+    const [answers] = await mysqlconnection.query(
+     readAnswers,
+      [questionid]
+    );
+
+    if (answers.length === 0) {
+      return res
+        .status(StatusCodes.NOT_FOUND)
+        .json({ msg: "No answers found for this question" });
+    }
+
+    return res.status(StatusCodes.OK).json({ answers });
+  } catch (error) {
+    console.error("Error fetching answers:", error.stack);
+    return res
+      .status(StatusCodes.INTERNAL_SERVER_ERROR)
+      .json({ msg: "Something went wrong, try again later!" });
+  }
+}
+
+module.exports = {postAnswer, getanswer};

@@ -11,11 +11,9 @@ app.get("/", (req, res) => {
   res.send(`<h1>Response is sent successfully</h1>`);
 });
 
-
 // --- Route Integration ---
 // When a request hits '/api/answer', use the answerRoutes module
 app.use("/api/answer", answerRoutes); 
-
 
 // Listen on port
 app.listen(port, () => {

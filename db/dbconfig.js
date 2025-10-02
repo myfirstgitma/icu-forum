@@ -1,4 +1,5 @@
-const mysql = require('mysql2');
+
+const mysql = require("mysql2");
 
 // Create connection pool
 const mysqlconnection = mysql.createPool({
@@ -9,16 +10,15 @@ const mysqlconnection = mysql.createPool({
   connectionLimit: process.env.DB_CONNECTION_LIMIT || 10,
 });
 
-
 // Test the connection
+
+
 mysqlconnection.getConnection((err, connection) => {
   if (err) {
     console.error("Database connection failed:", err.message);
   } else {
     console.log("The connection is successful");
-    connection.release(); 
+    connection.release(); // release back to pool
   }
 });
-
 module.exports = mysqlconnection.promise();
-

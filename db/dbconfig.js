@@ -10,6 +10,8 @@ const mysqlconnection = mysql.createPool({
 });
 
 // Test the connection
+
+module.exports = mysqlconnection.promise();
 mysqlconnection.getConnection((err, connection) => {
   if (err) {
     console.error("Database connection failed:", err.message);
@@ -18,5 +20,3 @@ mysqlconnection.getConnection((err, connection) => {
     connection.release(); // release back to pool
   }
 });
-
-module.exports = mysqlconnection.promise();

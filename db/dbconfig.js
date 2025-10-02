@@ -1,6 +1,6 @@
+
 const { request } = require("express");
 const mysql2 = require("mysql2");
-
 
 const mysqlconnection = mysql2.createPool({
   user: process.env.DB_USER,
@@ -17,3 +17,6 @@ mysqlconnection.query("SELECT 1", (err, result) => {
     console.log("Query successful:", result);
   }
 });
+
+
+module.exports =  mysqlconnection.promise()

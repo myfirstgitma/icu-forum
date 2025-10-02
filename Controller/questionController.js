@@ -1,22 +1,13 @@
+require("dotenv").config();
 const db = require("../db/dbconfig");
-
 const getAllQuestions = async (req, res) => {
   const sqlQuery = `
    
-      SELECT 
-            q.id AS question_id, 
-            q.title, 
-            q.description, 
-            q.tag,
-            q.created_at,               
-            u.username 
+      SELECT *       
         FROM 
             questions q
         JOIN 
             users u ON q.userid = u.userid
-        ORDER BY 
-            q.created_at DESC;
-    
   `;
   try {
     const [questions] = await db.execute(sqlQuery);
@@ -37,4 +28,4 @@ const getAllQuestions = async (req, res) => {
   }
 };
 
-module.exports = { getAllQuestions};
+module.exports = { getAllQuestions };

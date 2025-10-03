@@ -1,5 +1,5 @@
 const express = require("express");
-const port = 5500;
+const port = 5000;
 const questionRoutes = require("./Routes/questionRoute");
 
 const app = express();
@@ -12,7 +12,7 @@ app.get("/", (req, res) => {
 });
 
 //  question routes middle-ware
-app.use("/api/user", questionRoutes);
+app.use("/api/questions", questionRoutes);
 
 app.listen(port, (err) => {
   if (err) {

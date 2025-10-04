@@ -1,11 +1,12 @@
 const express = require("express");
+const questionRoutes = require("./Routes/questionRoute");
+
+//  question routes middle-ware
+app.use("/api/questions", questionRoutes);
+
 const app = express();
 const port = 5000;
 require("dotenv").config();
-
-const answerRoutes = require('./Routes/answerRoutes');
-//import userRoutes middleware
-const userRoutes = require("./Routes/userRoutes");
 //import db
 const mysqlconnection = require("./db/dbconfig")
 //middleware
@@ -13,9 +14,6 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 app.use("/api/answer", answerRoutes); 
-
-//user-route middleware
-app.use("/api/user", userRoutes);
 
 // Simple route to test
 app.get("/", (req, res) => {

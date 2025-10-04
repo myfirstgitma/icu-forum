@@ -1,32 +1,35 @@
 const express = require("express");
 const app = express();
 const port = 5000;
+const authMiddleware = require("./middleware/authMiddleware");
 require("dotenv").config();
 //import db
-const mysqlconnection = require("./db/dbconfig")
+const mysqlconnection = require("./db/dbconfig");
 
-const answerRoutes = require('./Routes/answerRoutes');
-//import userRoutes middleware
+//import Routes middleware
 const userRoutes = require("./Routes/userRoutes");
+const questionRoutes = require("./Routes/questionRoute");
+const answerRoutes = require("./Routes/answerRoutes");
+const askgpt = require("./Routes/questionRoute");
 
 //middleware
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-app.use("/api/answer", answerRoutes); 
-
-//user-route middleware
+// routes middle-ware
 app.use("/api/user", userRoutes);
+app.use("/api/questions", authMiddleware, questionRoutes);
+app.use("/api/answer", authMiddleware, answerRoutes);
+app.use("/api/chatgpt", askgpt);
 
 // Simple route to test
 app.get("/", (req, res) => {
   res.send(`<h1>Response is sent successfully</h1>`);
 });
 
-
 //connection test
 
-const start=async()=> {
+const start = async () => {
   try {
     const result = await mysqlconnection.execute("select 'test'");
     // console.log(result);
@@ -36,11 +39,9 @@ const start=async()=> {
   } catch (err) {
     console.log(err.message);
   }
-}
+};
 start();
-
 
 // app.listen(port, (err) => {
 //   console.log("connected http://localhost:5000");
 // })
-

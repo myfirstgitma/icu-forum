@@ -2,12 +2,13 @@ const express = require("express");
 const app = express();
 const port = 5000;
 require("dotenv").config();
+//import db
+const mysqlconnection = require("./db/dbconfig")
 
 const answerRoutes = require('./Routes/answerRoutes');
 //import userRoutes middleware
 const userRoutes = require("./Routes/userRoutes");
-//import db
-const mysqlconnection = require("./db/dbconfig")
+
 //middleware
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));

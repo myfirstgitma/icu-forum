@@ -1,13 +1,11 @@
-
-
 const mysqlconnection = require("../db/dbconfig");
 const asyncHandler = require("express-async-handler");
 const { StatusCodes } = require("http-status-codes");
 
 //post answer
 const postAnswer = asyncHandler(async (req, res) => {
-    // console.log(req.body);
-  const { userid, questionid, answer } = req.body;
+  // console.log(req.body);
+const { userid, questionid, answer } = req.body;
 
   // Error Handling for missing answers ---
   if (!answer || !questionid) {

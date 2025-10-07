@@ -61,19 +61,31 @@ const askQuestion = async (req, res) => {
 // };
 
 //another way to fetch all question
+// Get all questions
 const getAllQuestions = async (req, res) => {
   try {
-    const fechquestion = `SELECT questions.title,questions.questionid,Users.username FROM questions LEFT JOIN Users ON questions.userid = Users.userid order by id desc `;
-    const [response] = await mysqlconnection.query(fechquestion);
+    const fetchQuestions = `
+      SELECT 
+        questions.title, 
+        questions.questionid, 
+        Users.username,
+        NOW() AS createdAt
+      FROM questions
+      LEFT JOIN Users ON questions.userid = Users.userid
+      ORDER BY questions.id DESC
+    `;
 
-    return res.status(StatusCodes.OK).json({ response });
+    const [questions] = await mysqlconnection.query(fetchQuestions);
+
+    return res.status(StatusCodes.OK).json({ questions });
   } catch (error) {
     console.log(error.message);
     return res
       .status(StatusCodes.INTERNAL_SERVER_ERROR)
-      .json({ msg: "something went wrong, try again later!" });
+      .json({ msg: "Something went wrong, try again later!" });
   }
 };
+
 
 // Get single question
 

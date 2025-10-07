@@ -1,6 +1,7 @@
 const express = require("express");
 const app = express();
 const port = 5000;
+const cors = require("cors");
 const authMiddleware = require("./middleware/authMiddleware");
 require("dotenv").config();
 //import db
@@ -15,6 +16,7 @@ const askgpt = require("./Routes/questionRoute");
 //middleware
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(cors());
 
 // routes middle-ware
 app.use("/api/user", userRoutes);

@@ -36,43 +36,47 @@ const askQuestion = async (req, res) => {
       .json({ msg: "something went wrong, try again later!" });
   }
 };
-// Get all questions
-// const getAllQuestions = async (req, res) => {
-//   const sqlQuery = `
-//       SELECT questions.title,questions.questionid,Users.username FROM questions LEFT JOIN Users ON questions.userid = Users.userid order by id desc
-//   `;
-//   try {
-//     const [questions] = await mysqlconnection.execute(sqlQuery);
-//     res.status(200).json({
-//       status: "succesfull",
-//       count: questions.length,
-//       message: "question is succesfully searched",
-//       questions: questions,
-//     });
-//   } catch (error) {
-//     console.error("Error:", error.message);
-//     //  internal error message
-//     res.status(500).json({
-//       status: "error internal",
-//       message: "error happened internaly: Questions can not be fetched",
-//       error: error.message,
-//     });
-//   }
-// };
+
 
 //another way to fetch all question
 // Get all questions
+// const getAllQuestions = async (req, res) => {
+//   try {
+//     const fetchQuestions = `
+//       SELECT 
+//         questions.title, 
+//         questions.questionid, 
+//         Users.username,
+//         NOW() AS createdAt
+//       FROM questions
+//       LEFT JOIN Users ON questions.userid = Users.userid
+//       ORDER BY questions.id DESC
+//     `;
+
+//     const [questions] = await mysqlconnection.query(fetchQuestions);
+
+//     return res.status(StatusCodes.OK).json({ questions });
+//   } catch (error) {
+//     console.log(error.message);
+//     return res
+//       .status(StatusCodes.INTERNAL_SERVER_ERROR)
+//       .json({ msg: "Something went wrong, try again later!" });
+//   }
+// };
+
 const getAllQuestions = async (req, res) => {
   try {
+    
     const fetchQuestions = `
       SELECT 
-        questions.title, 
-        questions.questionid, 
-        Users.username,
-        NOW() AS createdAt
-      FROM questions
-      LEFT JOIN Users ON questions.userid = Users.userid
-      ORDER BY questions.id DESC
+    questions.title,
+    questions.questionid,
+    questions.userid,
+    Users.username,
+    NOW() AS createdAt
+  FROM questions
+  LEFT JOIN Users ON questions.userid = Users.userid
+  ORDER BY questions.id DESC
     `;
 
     const [questions] = await mysqlconnection.query(fetchQuestions);
@@ -87,24 +91,37 @@ const getAllQuestions = async (req, res) => {
 };
 
 
+
 // Get single question
 
 async function getSingleQuestion(req, res) {
-  // res.json({ msg: "all questions" });
   try {
     const { questionid } = req.query;
-    const fetchSingleQuestion = `SELECT questions.*,Users.username FROM questions left join Users ON questions.userid=Users.userid where questionid=? order by id desc `;
-    const questions = await mysqlconnection.query(fetchSingleQuestion, [
-      questionid,
-    ]);
-    return res.status(StatusCodes.OK).json({ questions: questions[0] });
+
+    const fetchSingleQuestion = `
+      SELECT 
+        questions.questionid, 
+        questions.title, 
+        questions.description, 
+        questions.userid, 
+        Users.username
+      FROM questions
+      LEFT JOIN Users ON questions.userid = Users.userid
+      WHERE questions.questionid = ?
+      ORDER BY questions.id DESC
+    `;
+
+    const [rows] = await mysqlconnection.query(fetchSingleQuestion, [questionid]);
+
+    return res.status(StatusCodes.OK).json({ questions: rows });
   } catch (error) {
-    console.log(error.message);
+    console.error("Backend error:", error.message);
     return res
-      .status(500)
-      .json({ msg: "something went wrong, try again later!" });
+      .status(StatusCodes.INTERNAL_SERVER_ERROR)
+      .json({ msg: "Something went wrong, try again later!" });
   }
 }
+
 // Edit Question
 const editQuestion = async (req, res) => {
   const { questionid } = req.params;

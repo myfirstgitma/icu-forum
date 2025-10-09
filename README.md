@@ -64,7 +64,7 @@ Evangadi-forum-backend/
 
 1. **Clone the repository**
    ```bash
-   git clone https://github.com/your-username/evangadi-forum-backend.git
+   git clone https://github.com/Dese-1216/Evangadi-Fourm.git
    cd evangadi-forum-backend
 Install dependencies
 

@@ -4,20 +4,6 @@ Welcome to the **Evangadi Forum** backend – a RESTful API that powers a Questi
 
 ---
 
-## 📌 Table of Contents
-
-- [Features](#-features)
-- [Tech Stack](#-tech-stack)
-- [Project Structure](#-project-structure)
-- [Getting Started](#-getting-started)
-  - [Installation](#installation)
-  - [Environment Variables](#environment-variables)
-  - [Running the Server](#running-the-server)
-- [Contributing](#-contributing)
-- [License](#-license)
-
----
-
 ## 🌟 Features
 
 - ✅ **User Authentication**

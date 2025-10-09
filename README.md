@@ -68,10 +68,10 @@ Evangadi-forum-backend/
    cd evangadi-forum-backend
 Install dependencies
 
-bash
-Copy code
+
+```bash
 npm install
-Create .env file in the root directory
+```
 
 🛡️ Environment Variables
 Create a .env file and add the following variables:
@@ -86,7 +86,6 @@ DB_CONNECTION_LIMIT=10
 JWT_SECRET=your_jwt_secret_key
 OPENAI_API_KEY=your_openai_key_if_needed
 ```
-💡 You can rename .env.example
 
 ▶️ Running the Server
 Start the server with:

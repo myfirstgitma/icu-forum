@@ -37,19 +37,18 @@ const askQuestion = async (req, res) => {
   }
 };
 
-
 //another way to fetch all question
 // Get all questions
 // const getAllQuestions = async (req, res) => {
 //   try {
 //     const fetchQuestions = `
-//       SELECT 
-//         questions.title, 
-//         questions.questionid, 
-//         Users.username,
+//       SELECT
+//         questions.title,
+//         questions.questionid,
+//         users.username,
 //         NOW() AS createdAt
 //       FROM questions
-//       LEFT JOIN Users ON questions.userid = Users.userid
+//       LEFT JOIN users ON questions.userid = users.userid
 //       ORDER BY questions.id DESC
 //     `;
 
@@ -66,16 +65,15 @@ const askQuestion = async (req, res) => {
 
 const getAllQuestions = async (req, res) => {
   try {
-    
     const fetchQuestions = `
       SELECT 
     questions.title,
     questions.questionid,
     questions.userid,
-    Users.username,
+    users.username,
     NOW() AS createdAt
   FROM questions
-  LEFT JOIN Users ON questions.userid = Users.userid
+  LEFT JOIN users ON questions.userid = users.userid
   ORDER BY questions.id DESC
     `;
 
@@ -90,8 +88,6 @@ const getAllQuestions = async (req, res) => {
   }
 };
 
-
-
 // Get single question
 
 async function getSingleQuestion(req, res) {
@@ -104,14 +100,16 @@ async function getSingleQuestion(req, res) {
         questions.title, 
         questions.description, 
         questions.userid, 
-        Users.username
+        users.username
       FROM questions
-      LEFT JOIN Users ON questions.userid = Users.userid
+      LEFT JOIN users ON questions.userid = users.userid
       WHERE questions.questionid = ?
       ORDER BY questions.id DESC
     `;
 
-    const [rows] = await mysqlconnection.query(fetchSingleQuestion, [questionid]);
+    const [rows] = await mysqlconnection.query(fetchSingleQuestion, [
+      questionid,
+    ]);
 
     return res.status(StatusCodes.OK).json({ questions: rows });
   } catch (error) {

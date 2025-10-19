@@ -1,4 +1,4 @@
--- Create Users table
+-- Create users table
 let creatUser=CREATE TABLE if not exists users (
     userid INT NOT NULL AUTO_INCREMENT,
     username VARCHAR(20) NOT NULL,

@@ -2,7 +2,7 @@ const mysqlconnection = require("../db/dbconfig");
 const { StatusCodes } = require("http-status-codes");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
-//register 
+//register
 const register = async (req, res) => {
   const { username, firstname, lastname, email, password } = req.body;
   // console.log(req.body);
@@ -13,7 +13,7 @@ const register = async (req, res) => {
   }
   try {
     const [user] = await mysqlconnection.query(
-      "SELECT username,userid from Users where username=? or email=?",
+      "SELECT username,userid from users where username=? or email=?",
       [username, email]
     );
     // console.log(user);
@@ -32,7 +32,7 @@ const register = async (req, res) => {
     const hashedpassword = await bcrypt.hash(password, salt);
 
     await mysqlconnection.query(
-      "INSERT INTO Users (username,firstname,lastname,email,password) VALUES (?,?,?,?,?)",
+      "INSERT INTO users (username,firstname,lastname,email,password) VALUES (?,?,?,?,?)",
       [username, firstname, lastname, email, hashedpassword]
     );
     return res.status(StatusCodes.CREATED).json({ msg: "user register" });
@@ -55,7 +55,7 @@ const login = async (req, res) => {
 
   try {
     const [user] = await mysqlconnection.query(
-      "SELECT username,userid,password from Users where email = ? ",
+      "SELECT username,userid,password from users where email = ? ",
       [email]
     );
     // console.log(user);
@@ -81,7 +81,13 @@ const login = async (req, res) => {
     const token = jwt.sign({ username, userid }, process.env.JWT_SECRET, {
       expiresIn: "1d",
     });
-    res.status(StatusCodes.OK).json({ msg: "user login successfully", token,user:{username,userid} });
+    res
+      .status(StatusCodes.OK)
+      .json({
+        msg: "user login successfully",
+        token,
+        user: { username, userid },
+      });
   } catch (err) {
     console.log(err.message);
     res

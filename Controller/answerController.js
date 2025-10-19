@@ -113,7 +113,7 @@ const getanswer = async (req, res) => {
   //   console.log(req.query)
 
   try {
-    const readAnswers = `SELECT answers.*,Users.username FROM answers LEFT JOIN Users ON answers.userid = Users.userid where answers.questionid=?`;
+    const readAnswers = `SELECT answers.*,users.username FROM answers LEFT JOIN users ON answers.userid = users.userid where answers.questionid=?`;
     const [answers] = await mysqlconnection.query(readAnswers, [questionid]);
 
     if (answers.length === 0) {

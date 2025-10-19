@@ -19,7 +19,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cors());
 
-// routes middle-ware
+// routes middle-ware is here
 app.use("/api/user", userRoutes);
 app.use("/api/questions", authMiddleware, questionRoutes);
 app.use("/api/answer", authMiddleware, answerRoutes);
